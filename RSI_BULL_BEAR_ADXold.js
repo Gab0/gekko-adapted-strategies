@@ -3,13 +3,15 @@
 	1. Use different RSI-strategies depending on a longer trend
 	2. But modify this slighly if shorter BULL/BEAR is detected
 	-
+	12 feb 2017
+	-
 	(CC-BY-SA 4.0) Tommie Hansen
 	https://creativecommons.org/licenses/by-sa/4.0/
 */
 
 // req's
-var log = require('../core/log.js');
-var config = require('../core/util.js').getConfig();
+var log = require ('../core/log.js');
+var config = require ('../core/util.js').getConfig();
 
 // strategy
 var strat = {
@@ -17,18 +19,17 @@ var strat = {
 	/* INIT */
 	init: function()
 	{
-		// core
-		this.name = 'RSI Bull and Bear + ADX';
-		this.requiredHistory = config.tradingAdvisor.historySize;
-		this.resetTrend();
+		this.name = 'RSI Bull and Bear ADX';
+		this.requiredHistory = 10//config.tradingAdvisor.historySize;
+		this.resetTrend();		
 		
-		// debug? set to false to disable all logging/messages/stats (improves performance in backtests)
-		this.debug = false;
+		// debug? set to flase to disable all logging/messages/stats (improves performance)
+		this.debug = true;
 		
 		// performance
-		config.backtest.batchSize = 1000; // increase performance
-		config.silent = true;
-		config.debug = false;
+		//config.backtest.batchSize = 1000; // increase performance
+		//config.silent = true;
+		//config.debug = false;
 		
 		// SMA
 		this.addIndicator('maSlow', 'SMA', this.settings.SMA_long );
@@ -39,13 +40,7 @@ var strat = {
 		this.addIndicator('BEAR_RSI', 'RSI', { interval: this.settings.BEAR_RSI });
 		
 		// ADX
-		this.addIndicator('ADX', 'ADX',  this.settings.ADX )
-		
-		// MOD (RSI modifiers)
-		this.BULL_MOD_high = this.settings.BULL_MOD_high;
-		this.BULL_MOD_low = this.settings.BULL_MOD_low;
-		this.BEAR_MOD_high = this.settings.BEAR_MOD_high;
-		this.BEAR_MOD_low = this.settings.BEAR_MOD_low;
+		this.addIndicator('adx', 'ADX', this.settings.ADX )
 		
 		
 		// debug stuff
@@ -58,20 +53,6 @@ var strat = {
 				bear: { min: 1000, max: 0 },
 				bull: { min: 1000, max: 0 }
 			};
-		}
-		
-		/* MESSAGES */
-		
-		// message the user about required history
-		log.info("====================================");
-		log.info('Running', this.name);
-		log.info('====================================');
-		log.info("Make sure your warmup period matches SMA_long and that Gekko downloads data if needed");
-		
-		// warn users
-		if( this.requiredHistory < this.settings.SMA_long )
-		{
-			log.warn("*** WARNING *** Your Warmup period is lower then SMA_long. If Gekko does not download data automatically when running LIVE the strategy will default to BEAR-mode until it has enough data.");
 		}
 		
 	}, // init()
@@ -119,8 +100,8 @@ var strat = {
 		let ind = this.indicators,
 			maSlow = ind.maSlow.result,
 			maFast = ind.maFast.result,
-			rsi,
-			adx = ind.ADX.result;
+			adx = this.indicators.adx.result;
+		
 		
 			
 		// BEAR TREND
@@ -131,8 +112,8 @@ var strat = {
 				rsi_low = this.settings.BEAR_RSI_low;
 			
 			// ADX trend strength?
-			if( adx > this.settings.ADX_high ) rsi_hi = rsi_hi + this.BEAR_MOD_high;
-			else if( adx < this.settings.ADX_low ) rsi_low = rsi_low + this.BEAR_MOD_low;
+			if( adx > this.settings.ADX_high ) rsi_hi = rsi_hi + 15;
+			else if( adx < this.settings.ADX_low ) rsi_low = rsi_low -5;
 				
 			if( rsi > rsi_hi ) this.short();
 			else if( rsi < rsi_low ) this.long();
@@ -148,8 +129,8 @@ var strat = {
 				rsi_low = this.settings.BULL_RSI_low;
 			
 			// ADX trend strength?
-			if( adx > this.settings.ADX_high ) rsi_hi = rsi_hi + this.BULL_MOD_high;		
-			else if( adx < this.settings.ADX_low ) rsi_low = rsi_low + this.BULL_MOD_low;
+			if( adx > this.settings.ADX_high ) rsi_hi = rsi_hi + 5;		
+			else if( adx < this.settings.ADX_low ) rsi_low = rsi_low -5;
 				
 			if( rsi > rsi_hi ) this.short();
 			else if( rsi < rsi_low )  this.long();
