@@ -16,4 +16,5 @@ Supertrend
 
 ```
 
+Indicators: native indicators are required to run these, get them here: https://github.com/Gekko-extra-indicators.git
 
