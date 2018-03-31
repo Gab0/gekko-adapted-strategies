@@ -6,14 +6,13 @@ Modifications include:
 - Remove hard coded parameters in favor of config-feeded params. Thats a must.
 ```
 
-This is actually legal I think. Credits to the authors are kept, strategy logic is never modified. <br>
+Credits to the authors are kept, strategy logic is never modified. <br>
 Allowed by the licences :3
 
 ```
 Authors:
 RSI_BULL_BEAR & RSI_BULL_BEAR_ADX @TommieHansen
-Supertrend 
-
+Supertrend @???
 ```
 
 Indicators: native indicators are required to run these, get them here: https://github.com/Gekko-extra-indicators.git
