@@ -12,7 +12,7 @@ Allowed by the licences :3
 ```
 Authors:
 RSI_BULL_BEAR & RSI_BULL_BEAR_ADX @TommieHansen
-Supertrend @???
+Supertrend @Dodo33
 ```
 
 Indicators: native indicators are required to run these, get them here: https://github.com/Gekko-extra-indicators.git
