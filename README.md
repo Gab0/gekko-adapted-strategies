@@ -15,5 +15,5 @@ RSI_BULL_BEAR & RSI_BULL_BEAR_ADX @TommieHansen
 Supertrend @Dodo33
 ```
 
-Indicators: native indicators are required to run these, get them here: https://github.com/gekko-extra-indicators.git
+Indicators: native indicators are required to run these, get them here: https://github.com/Gab0/gekko-extra-indicators
 
